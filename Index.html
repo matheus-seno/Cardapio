@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio | Reino Doce</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D30C7B', 
+                        primaryHover: '#b50a69',
+                        bgLight: '#fdf2f8', 
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        cursive: ['Pacifico', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilo da barra de rolagem */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #fdf2f8; }
+        ::-webkit-scrollbar-thumb { background: #D30C7B; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #b50a69; }
+        
+        /* Efeito hover na foto */
+        .card-zoom:hover img { transform: scale(1.05); }
+        
+        /* Animação do modal/carrinho */
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-bgLight text-gray-800 antialiased font-sans flex flex-col min-h-screen">
+
+    <!-- Cabeçalho -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-3xl font-cursive text-primary">Reino Doce</div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#menu" class="text-gray-600 hover:text-primary transition font-semibold">Cardápio</a>
+                <a href="#contato" class="text-gray-600 hover:text-primary transition font-semibold">Contato & Local</a>
+            </nav>
+            <button onclick="toggleCart()" class="bg-primary hover:bg-primaryHover text-white px-4 py-2 rounded-full font-semibold transition shadow-md flex items-center gap-2 relative">
+                <i class="fas fa-shopping-cart text-lg"></i> <span class="hidden md:inline">Meu Carrinho</span>
+                <span id="cart-count-header" class="absolute -top-2 -right-2 bg-white text-primary text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-md hidden">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Banner Principal -->
+    <section class="bg-primary text-white py-16 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 font-cursive">Apresentamos</h1>
+            <p class="text-lg opacity-90 mb-8">Doces artesanais, preparados especialmente para você.</p>
+        </div>
+    </section>
+
+    <!-- Início do Cardápio -->
+    <main id="menu" class="flex-grow max-w-6xl mx-auto px-4 py-12 w-full">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-gray-800 inline-block border-b-4 border-primary pb-2">Nosso Cardápio</h2>
+            <p class="text-gray-500 mt-3">Escolha suas doçuras favoritas</p>
+        </div>
+
+        <!-- CATEGORIA: BÁSICO -->
+        <div class="mt-12 mb-6">
+            <h3 class="text-2xl font-cursive text-primary border-l-4 border-primary pl-3">Básico</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+            
+            <!-- Produto -->
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/glazed.jpeg')">
+                    <img src="imagens\glazed.jpeg" alt="Glazed" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">
+                    R$ 8,00
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Glazed</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow"></p>
+                    <button onclick="addToCart('Glazed', 8.00)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Produto -->
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/canelinha.jpeg')">
+                    <img src="imagens\canelinha.jpeg" alt="Canelinha" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">
+                    R$ 8,00
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Canelinha</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow"></p>
+                    <button onclick="addToCart('Canelinha', 8.00)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORIA: SIMPLES -->
+        <div class="mt-12 mb-6">
+            <h3 class="text-2xl font-cursive text-primary border-l-4 border-primary pl-3">Simples</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+            
+            <!-- Produtos Simples -->
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/palhacito.jpeg')">
+                    <img src="imagens\palhacito.jpeg" alt="Palhacito" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">R$ 13,00</div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Palhacito</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Massa fofinha coberta com chocolate ao leite e confete colorido.</p>
+                    <button onclick="addToCart('Palhacito', 13.00)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/nevasca.jpeg')">
+                    <img src="imagens\nevasca.jpeg" alt="Nevasca" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">R$ 13,00</div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Nevasca</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Massa fofinha coberta com chocolate branco e leite ninho.</p>
+                    <button onclick="addToCart('Nevasca', 13.00)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/pretinho.jpeg')">
+                    <img src="imagens\pretinho.jpeg" alt="Pretinho" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">R$ 12,00</div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Pretinho</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Massa fofinha coberta com chocolate ao leite 100% nobre.</p>
+                    <button onclick="addToCart('Pretinho', 12.00)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/homer.jpeg')">
+                    <img src="imagens\homer.jpeg" alt="Homer" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">R$ 12,00</div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Homer</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Massa fofinha coberta com chocolate rosa 100% nobre.</p>
+                    <button onclick="addToCart('Homer', 12.00)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORIA: GOURMET -->
+        <div class="mt-12 mb-6">
+            <h3 class="text-2xl font-cursive text-primary border-l-4 border-primary pl-3">Gourmet</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+            
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/knd_black.jpeg')">
+                    <img src="imagens\knd_black.jpeg" alt="Kinders Black" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">R$ 25,00</div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Kinders Black</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Massa fofinha recheada de ninho com Nutella coberta com chocolate ao leite kinder chocolate e kinder Bueno.</p>
+                    <button onclick="addToCart('Kinders Black', 25.00)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/ber_ninu.jpeg')">
+                    <img src="imagens\ber_ninu.jpeg" alt="Berry Ninu" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">R$ 25,00</div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Berry Ninu</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Massa fofinha recheada de ninho com Nutella coberta com chocolate ao leite, morango e pedaços de kinder Bueno.</p>
+                    <button onclick="addToCart('Berry Ninu', 25.00)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/wht_ninu2.jpeg')">
+                    <img src="imagens\wht_ninu2.jpeg" alt="White Ninho" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">R$ 23,00</div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">White Ninho</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Massa fofinha recheada de ninho com Nutella coberta com chocolate branco, leite ninho e kinder Bueno.</p>
+                    <button onclick="addToCart('White Ninho', 23.00)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORIA: COOKIES -->
+        <div class="mt-12 mb-6">
+            <h3 class="text-2xl font-cursive text-primary border-l-4 border-primary pl-3">Cookies</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+            
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/cookie_ninho.jpeg')">
+                    <img src="imagens\cookie_ninho.jpeg" alt="Cookie Ninho com Nutella" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">R$ 18,00</div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Cookie Ninho com Nutella</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Massa crocante por fora e macia feita com leite NINHO e recheado com NUTELLA de verdade.</p>
+                    <button onclick="addToCart('Cookie Ninho com Nutella', 18.00)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/mini_crookie.jpeg')">
+                    <img src="imagens\mini_crookie.jpeg" alt="Mini Crookie" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">R$ 18,90</div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Mini Crookie</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">Mini croissant, recheado com uma generosa camada de nutela, massa de cookie e coberto com mais massa de cookie.</p>
+                    <button onclick="addToCart('Mini Crookie', 18.90)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden card-zoom flex flex-col h-full border border-pink-50 relative">
+                <div class="h-56 w-full overflow-hidden relative cursor-pointer" onclick="openZoom('imagens/cookie_col.jpeg')">
+                    <img src="imagens\cookie_col.jpeg" alt="Cookie de Colher 4x1" class="w-full h-full object-cover transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                        <i class="fas fa-search-plus text-white text-3xl"></i>
+                    </div>
+                </div>
+                <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-primary font-bold rounded-full shadow-sm z-10 pointer-events-none">R$ 24,90</div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Cookie de Colher 4x1</h3>
+                    <p class="text-gray-500 text-sm mb-4 flex-grow">São 4 mini massas de cookies macia por dentro, com gotas de chocolate, recheado de nutella.</p>
+                    <button onclick="addToCart('Cookie de Colher 4x1', 24.90)" class="w-full bg-pink-50 hover:bg-primary text-primary hover:text-white border border-primary transition-colors py-2 rounded-xl font-semibold mt-auto flex justify-center items-center">
+                        <i class="fas fa-cart-plus mr-2"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Contato -->
+    <section id="contato" class="bg-white py-12 border-t border-pink-100">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800 inline-block border-b-4 border-primary pb-2">Onde Estamos & Contato</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="h-80 md:h-full w-full rounded-2xl overflow-hidden shadow-sm border border-pink-50 min-h-[300px]">
+                    <iframe src="https://maps.google.com/maps?q=Reino%20doce%20-%20Donuts,%20R.%20Sternthal%20-%20Aimor%C3%A9,%20Guabiruba%20-%20SC&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                
+                <div class="flex flex-col space-y-6">
+                    <div class="bg-bgLight p-6 rounded-2xl shadow-sm border border-pink-50">
+                        <h3 class="text-xl font-bold text-primary mb-2"><i class="fas fa-map-marker-alt mr-2"></i> Nosso Endereço</h3>
+                        <p class="text-gray-600">R. Sternthal - Aimoré<br>Guabiruba - SC</p>
+                    </div>
+                    
+                    <div class="bg-bgLight p-6 rounded-2xl shadow-sm border border-pink-50">
+                        <h3 class="text-xl font-bold text-primary mb-4"><i class="fas fa-heart mr-2"></i> Conecte-se conosco</h3>
+                        <div class="flex flex-col space-y-3">
+                            <a href="https://instagram.com/oreinodocee" target="_blank" class="flex items-center justify-center w-full bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F56040] hover:opacity-90 text-white py-3 px-4 rounded-xl font-bold transition shadow-md">
+                                <i class="fab fa-instagram text-2xl mr-2"></i> Siga no Instagram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-800 text-gray-300 py-6 text-center">
+        <p>&copy; 2024 Reino Doce. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- MODAL DE IMAGEM ZOOM -->
+    <div id="imageModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center fade-in p-4" onclick="closeZoom(event)">
+        <span class="absolute top-4 right-6 text-white text-4xl cursor-pointer hover:text-gray-300 z-[101]" onclick="closeZoom(event)">&times;</span>
+        <img id="zoomedImg" src="" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl object-contain border-4 border-white/10" onclick="event.stopPropagation()">
+    </div>
+
+    <!-- BOTÃO FLUTUANTE DE CARRINHO -->
+    <button onclick="toggleCart()" class="fixed bottom-6 right-6 bg-primary hover:bg-primaryHover text-white p-4 rounded-full shadow-2xl z-40 transition-transform transform hover:scale-110 flex items-center justify-center">
+        <i class="fas fa-shopping-cart text-2xl"></i>
+        <span id="cart-count-floating" class="absolute -top-2 -right-2 bg-white text-primary font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-md hidden border border-primary text-xs">0</span>
+    </button>
+
+    <!-- MODAL DO CARRINHO (SIDEBAR) -->
+    <div id="cartModal" class="fixed inset-0 bg-black/50 z-50 hidden fade-in" onclick="closeCart(event)">
+        <div class="absolute top-0 right-0 w-full max-w-md h-full bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300" id="cartSidebar" onclick="event.stopPropagation()">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-bgLight">
+                <h2 class="text-2xl font-bold text-gray-800"><i class="fas fa-shopping-cart text-primary mr-2"></i> Seu Pedido</h2>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500 text-2xl">&times;</button>
+            </div>
+            
+            <div id="cartItems" class="flex-grow overflow-y-auto p-6 space-y-4">
+                <p class="text-center text-gray-500 mt-10">Seu carrinho está vazio.</p>
+            </div>
+
+            <div class="p-6 border-t border-gray-200 bg-gray-50">
+                <div class="flex justify-between items-center mb-4 text-xl font-bold">
+                    <span>Total:</span>
+                    <span id="cartTotal" class="text-primary">R$ 0,00</span>
+                </div>
+                <button onclick="sendToWhatsApp()" class="w-full bg-[#25D366] hover:bg-[#20b858] text-white py-3 rounded-xl font-bold transition shadow-md flex items-center justify-center text-lg">
+                    <i class="fab fa-whatsapp text-2xl mr-2"></i> Finalizar no WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Lógica do Modal de Imagem (Zoom)
+        function openZoom(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const img = document.getElementById('zoomedImg');
+            img.src = imageSrc;
+            modal.classList.remove('hidden');
+        }
+
+        function closeZoom(event) {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+        }
+
+        // Lógica do Carrinho de Compras
+        let cart = [];
+
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+            updateCartUI();
+            
+            // Pequeno feedback visual ao adicionar
+            const cartBtn = document.querySelector('.fixed.bottom-6');
+            cartBtn.classList.add('scale-125');
+            setTimeout(() => cartBtn.classList.remove('scale-125'), 200);
+        }
+
+        function changeQuantity(name, delta) {
+            const item = cart.find(item => item.name === name);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.name !== name);
+                }
+                updateCartUI();
+            }
+        }
+
+        function formatCurrency(value) {
+            return `R$ ${value.toFixed(2).replace('.', ',')}`;
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotalElement = document.getElementById('cartTotal');
+            const badges = [document.getElementById('cart-count-header'), document.getElementById('cart-count-floating')];
+            
+            let total = 0;
+            let totalItems = 0;
+            cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-center text-gray-500 mt-10">Seu carrinho está vazio.</p>';
+            } else {
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    totalItems += item.quantity;
+
+                    cartItemsContainer.innerHTML += `
+                        <div class="flex justify-between items-center bg-white p-3 rounded-lg border border-pink-50 shadow-sm">
+                            <div class="flex-grow">
+                                <h4 class="font-bold text-gray-800">${item.name}</h4>
+                                <span class="text-primary text-sm">${formatCurrency(item.price)}</span>
+                            </div>
+                            <div class="flex items-center space-x-3 bg-gray-100 rounded-lg p-1">
+                                <button onclick="changeQuantity('${item.name}', -1)" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary transition font-bold">-</button>
+                                <span class="font-bold w-4 text-center">${item.quantity}</span>
+                                <button onclick="changeQuantity('${item.name}', 1)" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary transition font-bold">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            cartTotalElement.innerText = formatCurrency(total);
+            
+            badges.forEach(badge => {
+                if(totalItems > 0) {
+                    badge.innerText = totalItems;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            const sidebar = document.getElementById('cartSidebar');
+            
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                setTimeout(() => sidebar.classList.remove('translate-x-full'), 10);
+            } else {
+                sidebar.classList.add('translate-x-full');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }
+        }
+
+        function closeCart(event) {
+            // Fecha se clicar fora da sidebar
+            if (event.target.id === 'cartModal') {
+                toggleCart();
+            }
+        }
+
+        function sendToWhatsApp() {
+            if (cart.length === 0) {
+                alert('Adicione produtos ao carrinho antes de finalizar!');
+                return;
+            }
+
+            let text = "Olá Reino Doce! Gostaria de fazer o seguinte pedido:\n\n";
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                text += `• ${item.quantity}x ${item.name} - ${formatCurrency(itemTotal)}\n`;
+                total += itemTotal;
+            });
+
+            text += `\n*Total a pagar: ${formatCurrency(total)}*\n\nComo funciona a entrega/retirada?`;
+            
+            const numeroTelefone = "5547992645550"; 
+            const linkWhatsApp = `https://wa.me/${numeroTelefone}?text=${encodeURIComponent(text)}`;
+            
+            window.open(linkWhatsApp, '_blank');
+        }
+    </script>
+</body>
+</html>
